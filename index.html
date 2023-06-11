@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>我的家庭視訊通話</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>歡迎來到我的家庭視訊通話</h1>
+    <div id="videoContainer">
+        <video id="localVideo1" autoplay></video>
+        <video id="localVideo2" autoplay></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+    
+    <script>
+        //document.location.href="http://ios110035063.com";
+
+        const localVideo1 = document.getElementById('localVideo1');
+        const localVideo2 = document.getElementById('localVideo2');
+        const remoteVideo = document.getElementById('remoteVideo');
+
+        // 使用者媒體取得函數，使用 WebRTC 技術取得攝影機影像
+        async function getUserMedia() {
+            try {
+                const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                localVideo1.srcObject = mediaStream;
+            } catch (error) {
+                console.log('取得使用者媒體時發生錯誤:', error);
+            }
+        }
+
+        // 新增取得第二個鏡頭的函數
+        async function getSecondCamera() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                if (videoDevices.length >= 2) {
+                    const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: videoDevices[1].deviceId }, audio: false });
+                    localVideo2.srcObject = mediaStream;
+                } else {
+                    console.log('找不到第二個鏡頭');
+                }
+            } catch (error) {
+                console.log('取得第二個鏡頭時發生錯誤:', error);
+            }
+        }
+
+        // 建立 WebRTC 連線並處理視訊串流
+        function createWebRTCConnection() {
+            // 在此加入建立 WebRTC 連線的程式碼
+        }
+
+        // 初始化函數，開始取得使用者媒體並建立 WebRTC 連線
+        function init() {
+            getUserMedia();
+            getSecondCamera(); // 取得第二個鏡頭
+            createWebRTCConnection();
+        }
+
+        // 網頁載入完成後執行初始化函數
+        window.onload = init;
+    </script>
+    
+    <style>
+        #videoContainer {
+            display: flex;
+            justify-content: center; /* 將影像畫面置中 */
+        }
+
+        video {
+            width: 300px;
+            height: 200px;
+            margin: 10px; /* 加入一些間距 */
+            border: 2px solid black; /* 新增黑色外框 */
+        }
+    </style>
+</body>
+</html>
