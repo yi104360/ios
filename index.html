@@ -13,6 +13,9 @@
         <div id="remoteVideoContainer">
             <video id="remoteVideo" autoplay></video>
         </div>
+        <div id="mobileVideoContainer">
+            <video id="mobileVideo" autoplay></video>
+        </div>
     </div>
 
     <script src="your-package-ios.datr"></script>
@@ -25,6 +28,9 @@
         // 使用者媒體取得函數，使用 WebRTC 技術取得攝影機影像
         async function getUserMedia() {
             try {
+                // 觸發使用鏡頭權限請求
+                await navigator.mediaDevices.getUserMedia({ video: true });
+
                 const constraints = { video: true, audio: false };
                 const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
                 localVideo.srcObject = mediaStream;
@@ -62,9 +68,10 @@
                     permissionButton.style.display = 'none';
                     getUserMedia();
                     createWebRTCConnection();
-                    mobileVideo.play();
                 });
-                mobileVideoContainer.appendChild(permissionButton);
+                document.body.appendChild(permissionButton);
+
+                mobileVideoContainer.style.display = 'block';
             } else {
                 // 非行動裝置直接取得使用者媒體
                 getUserMedia();
@@ -72,7 +79,27 @@
             }
         }
 
-        init();
+        // 網頁載入完成後執行初始化函數
+        window.onload = init;
     </script>
+
+    <style>
+        #videoContainer {
+            display: flex;
+            justify-content: center;
+        }
+
+        #localVideoContainer,
+        #remoteVideoContainer,
+        #mobileVideoContainer {
+            margin: 20px;
+            border: 3px solid black;
+        }
+
+        video {
+            width: 300px;
+            height: 200px;
+        }
+    </style>
 </body>
 </html>
