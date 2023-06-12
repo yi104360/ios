@@ -57,13 +57,18 @@
         if (isMobile) {
             // 行動裝置需要請求使用者媒體許可權
             const permissionButton = document.createElement('button');
-            permissionButton.textContent = '點擊開啟攝影機';
-            permissionButton.addEventListener('click', () => {
-                permissionButton.style.display = 'none';
-                getUserMedia();
-                createWebRTCConnection();
-            });
-            document.body.appendChild(permissionButton);
+            if (isMobile) {
+                // 行動裝置需要請求使用者媒體許可權
+                const permissionButton = document.createElement('button');
+                permissionButton.textContent = '點擊開啟攝影機';
+                permissionButton.addEventListener('click', () => {
+                    permissionButton.style.display = 'none';
+                    getUserMedia();
+                    createWebRTCConnection();
+                    mobileVideo.play();
+                });
+                mobileVideoContainer.appendChild(permissionButton);
+            } 
 
             // 新增行動裝置的影像視窗
             const mobileVideoContainer = document.createElement('div');
