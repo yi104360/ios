@@ -1,0 +1,9 @@
+#videoContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+video {
+    width: 300px;
+    height: 200px;
+}

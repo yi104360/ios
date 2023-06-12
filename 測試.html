@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>相機測試</title>
+    <style>
+        #cameraFeed {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <video id="cameraFeed" autoplay></video>
+
+    <script>
+        const cameraFeed = document.getElementById('cameraFeed');
+
+        async function startCamera() {
+            try {
+                const mediaDevices = navigator.mediaDevices;
+                const stream = await mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraFeed.srcObject = stream;
+            } catch (error) {
+                console.error('取得相機影像時發生錯誤:', error);
+            }
+        }
+
+        startCamera();
+    </script>
+</body>
+</html>
